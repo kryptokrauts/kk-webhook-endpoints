@@ -83,7 +83,6 @@ func main() {
 				if err = videoContributions.FindOne(context.Background(), bson.M{"data.activity.video.id": pepoEvent.Data.Activity.Video.ID}, opts).Decode(&lastContributionEvent); err != nil {
 					fmt.Println("previous contribution doesn't exist")
 				}
-				fmt.Println(toJSON(lastContributionEvent))
 				currentTotalContributionAmount, _ := strconv.ParseFloat(pepoEvent.Data.Activity.Video.TotalContributionAmount, 32)
 				previousTotalContributionAmount, _ := strconv.ParseFloat(lastContributionEvent.Data.Activity.Video.TotalContributionAmount, 32)
 				_, databaseErr = videoContributions.InsertOne(context.Background(), pepoEvent)
@@ -97,8 +96,6 @@ func main() {
 				fmt.Println(err)
 				fmt.Println("error writing event data into database: " + toJSON(payload))
 			}
-
-			fmt.Println(discordMsg)
 			sendDiscordMessage(discordSession, discordMsg)
 		}
 	})
